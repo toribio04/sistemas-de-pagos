@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import * as XLSX from 'xlsx';
 import { PaymentData } from '../models/payment.model';
 
@@ -9,13 +10,20 @@ export class ExcelService {
   private fileName: string = 'pagos_banco_robles.xlsx';
   private sheetName: string = 'Pagos';
   private storageKey: string = 'excelData';
+  private isBrowser: boolean;
 
-  constructor() {
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
     // Verificar si el archivo existe, si no, crear uno nuevo con headers
-    this.initializeExcelFile();
+    if (this.isBrowser) {
+      this.initializeExcelFile();
+    }
   }
 
   private initializeExcelFile(): void {
+    if (!this.isBrowser) {
+      return;
+    }
     try {
       // Intentar leer el archivo existente
       const existingData = localStorage.getItem(this.storageKey);
@@ -36,6 +44,10 @@ export class ExcelService {
   }
 
   saveToExcel(data: PaymentData, autoDownload: boolean = true): void {
+    if (!this.isBrowser) {
+      console.warn('ExcelService: No se puede guardar en el servidor');
+      return;
+    }
     try {
       // Leer datos existentes desde localStorage
       const existingData = localStorage.getItem(this.storageKey);
@@ -82,11 +94,16 @@ export class ExcelService {
       }
     } catch (error) {
       console.error('Error al guardar en Excel:', error);
-      alert('Error al guardar los datos. Por favor, intente nuevamente.');
+      if (this.isBrowser) {
+        alert('Error al guardar los datos. Por favor, intente nuevamente.');
+      }
     }
   }
 
   private downloadExcel(workbook: XLSX.WorkBook): void {
+    if (!this.isBrowser) {
+      return;
+    }
     try {
       const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
       const data = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
@@ -102,6 +119,9 @@ export class ExcelService {
   }
 
   downloadExcelFile(): void {
+    if (!this.isBrowser) {
+      return;
+    }
     try {
       const existingData = localStorage.getItem(this.storageKey);
       if (existingData) {
@@ -109,15 +129,22 @@ export class ExcelService {
         const workbook = XLSX.read(arrayBuffer, { type: 'array' });
         this.downloadExcel(workbook);
       } else {
-        alert('No hay datos para descargar');
+        if (this.isBrowser) {
+          alert('No hay datos para descargar');
+        }
       }
     } catch (error) {
       console.error('Error al descargar archivo Excel:', error);
-      alert('Error al descargar el archivo. Por favor, intente nuevamente.');
+      if (this.isBrowser) {
+        alert('Error al descargar el archivo. Por favor, intente nuevamente.');
+      }
     }
   }
 
   getAllPayments(): PaymentData[] {
+    if (!this.isBrowser) {
+      return [];
+    }
     try {
       const existingData = localStorage.getItem(this.storageKey);
       if (existingData) {
@@ -144,6 +171,9 @@ export class ExcelService {
   }
 
   clearData(): void {
+    if (!this.isBrowser) {
+      return;
+    }
     localStorage.removeItem(this.storageKey);
     this.initializeExcelFile();
   }
