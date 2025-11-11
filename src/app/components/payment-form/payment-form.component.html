@@ -1,0 +1,119 @@
+<div class="container">
+  <div class="background-pattern"></div>
+  
+  <header class="header">
+    <h1>BANCO ROBLES</h1>
+  </header>
+
+  <div class="main-content">
+    <div class="form-panel">
+      <h2 class="form-title">Ingrese sus datos:</h2>
+      
+      <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()" class="payment-form">
+        <div class="form-group">
+          <label for="nombre">Nombre</label>
+          <input 
+            type="text" 
+            id="nombre" 
+            formControlName="nombre" 
+            placeholder="Escribe tu nombre"
+            class="form-input"
+            [class.invalid]="paymentForm.get('nombre')?.invalid && paymentForm.get('nombre')?.touched"
+          >
+          <span class="error-message" *ngIf="paymentForm.get('nombre')?.invalid && paymentForm.get('nombre')?.touched">
+            El nombre es requerido
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="apellido">Apellido</label>
+          <input 
+            type="text" 
+            id="apellido" 
+            formControlName="apellido" 
+            placeholder="Escribe tu apellido"
+            class="form-input"
+            [class.invalid]="paymentForm.get('apellido')?.invalid && paymentForm.get('apellido')?.touched"
+          >
+          <span class="error-message" *ngIf="paymentForm.get('apellido')?.invalid && paymentForm.get('apellido')?.touched">
+            El apellido es requerido
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="empresa">Empresa a pagar</label>
+          <select 
+            id="empresa" 
+            formControlName="empresa" 
+            class="form-input"
+            [class.invalid]="paymentForm.get('empresa')?.invalid && paymentForm.get('empresa')?.touched"
+          >
+            <option value="">Seleccione una empresa</option>
+            <option *ngFor="let empresa of empresas" [value]="empresa">
+              {{ empresa }}
+            </option>
+          </select>
+          <span class="error-message" *ngIf="paymentForm.get('empresa')?.invalid && paymentForm.get('empresa')?.touched">
+            Debe seleccionar una empresa
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="importe">Importe</label>
+          <input 
+            type="number" 
+            id="importe" 
+            formControlName="importe" 
+            placeholder="Importe"
+            step="0.01"
+            min="0.01"
+            class="form-input"
+            [class.invalid]="paymentForm.get('importe')?.invalid && paymentForm.get('importe')?.touched"
+          >
+          <span class="error-message" *ngIf="paymentForm.get('importe')?.invalid && paymentForm.get('importe')?.touched">
+            El importe debe ser mayor a 0
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label>Forma de pago</label>
+          <div class="radio-group">
+            <label class="radio-label">
+              <input 
+                type="radio" 
+                formControlName="formaPago" 
+                value="Tarjeta"
+                class="radio-input"
+              >
+              <span class="radio-text">
+                <svg class="card-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                  <line x1="1" y1="10" x2="23" y2="10"></line>
+                </svg>
+                Tarjeta
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <button type="submit" class="submit-button">Confirmar pago</button>
+      </form>
+
+      <footer class="form-footer">
+        <p>BANCO ROBLES</p>
+        <p>2025 - TODOS LOS DERECHOS RESERVADOS</p>
+      </footer>
+    </div>
+
+    <div class="illustration">
+      <div class="phone-illustration">
+        <div class="phone-screen">
+          <div class="cart-icon">🛒</div>
+          <div class="checkmark">✓</div>
+        </div>
+      </div>
+      <div class="bag-illustration">🛍️</div>
+    </div>
+  </div>
+</div>
+
