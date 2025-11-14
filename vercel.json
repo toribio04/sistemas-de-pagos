@@ -1,11 +1,12 @@
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist/robles-payment",
+  "version": 2,
+  "public": "dist/robles-payment",
+  "builds": [
+    { "src": "dist/robles-payment/**/*", "use": "@vercel/static" }
+  ],
   "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
+    { "src": "/assets/(.*)", "dest": "/dist/robles-payment/assets/$1" },
+    { "src": "/(.*\\.(js|css|map|png|jpg|jpeg|svg|ico))", "dest": "/dist/robles-payment/$1" },
+    { "src": "/(.*)", "dest": "/dist/robles-payment/index.html" }
   ]
 }
-
