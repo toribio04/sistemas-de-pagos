@@ -5,8 +5,8 @@
     { "src": "dist/robles-payment/**/*", "use": "@vercel/static" }
   ],
   "routes": [
-    { "src": "/assets/(.*)", "dest": "/dist/robles-payment/assets/$1" },
-    { "src": "/(.*\\.(js|css|map|png|jpg|jpeg|svg|ico))", "dest": "/dist/robles-payment/$1" },
-    { "src": "/(.*)", "dest": "/dist/robles-payment/index.html" }
+    { "handle": "filesystem" },
+    { "src": "/.*", "dest": "/dist/robles-payment/index.html" }
   ]
 }
+
