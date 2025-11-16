@@ -1,12 +1,15 @@
 {
   "version": 2,
-  "public": "dist/robles-payment",
   "builds": [
-    { "src": "dist/robles-payment/**/*", "use": "@vercel/static" }
+    {
+      "src": "dist/robles-payment/index.html",
+      "use": "@vercel/static"
+    }
   ],
   "routes": [
-    { "handle": "filesystem" },
-    { "src": "/.*", "dest": "/dist/robles-payment/index.html" }
+    {
+      "src": "/(.*)",
+      "dest": "dist/robles-payment/index.html"
+    }
   ]
 }
-
