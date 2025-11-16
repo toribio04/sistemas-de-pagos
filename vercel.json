@@ -2,14 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "dist/robles-payment/index.html",
-      "use": "@vercel/static"
+      "src": "package.json",
+      "use": "@vercel/static-build"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "dist/robles-payment/index.html"
+      "dest": "/index.html"
     }
   ]
 }
